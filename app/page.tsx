@@ -1,65 +1,87 @@
-import Image from "next/image";
+import { homepageAction } from "@/app/actions/homepageAction";
+import { Homepage } from "@/app/utils/types";
+import Link from "next/link";
+import "./globals.css"; // важно — чтобы подключилась mask-arc
 
-export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+
+export async function generateMetadata() {
+    const homepageEntry = await homepageAction();
+
+    if (!homepageEntry) {
+        return {
+            title: "Homepage",
+            description: "Homepage",
+        };
+    }
+
+    const { bannerTitle, bannerSubtitle } = homepageEntry.fields as Homepage;
+
+    return {
+        title: bannerTitle,
+        description: `${bannerTitle} - ${bannerSubtitle}`,
+    };
+}
+
+export default async function Home() {
+    const homepageEntry = await homepageAction();
+
+    if (!homepageEntry) {
+        return <div>No homepage data found.</div>;
+    }
+
+    const {bannerTitle, bannerSubtitle, bannerButtonText, bannerButtonUrl, bannerVideoUrl} = homepageEntry.fields as Homepage;
+
+    const videoUrl = bannerVideoUrl?.fields?.file?.url as string | undefined;
+
+    return (
+        <main className="flex min-h-screen w-full flex-col items-center bg-emerald-900">
+            <section className="relative w-screen h-screen overflow-hidden">
+
+
+                <svg width="100%" height="100%" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[70vh] w-auto">
+                    <defs>
+                        <mask id="archMask" x="0" y="0" width="100%" height="100%">
+
+                            <rect width="100%" height="100%" fill="black" />
+
+
+                            <path  d="M25 100 L25 20 A25 25 0 0 1 75 20 L75 100 Z
+ "
+                                fill="white"
+                                   transform="scale(6.5)"
+                            />
+                        </mask>
+                    </defs>
+                </svg>
+
+
+                {videoUrl && (
+                    <video src={videoUrl} autoPlay
+                        muted
+                        loop
+                        className="absolute inset-0 w-full h-full object-cover"
+                        style={{ mask: "url(#archMask)", WebkitMask: "url(#archMask)" }}
+                    />
+                )}
+
+                {/* === CONTENT === */}
+                <div className="relative z-10 flex flex-col items-start justify-center w-full h-full text-white p-16 uppercase">
+                    <h1 className="text-5xl mb-2">{bannerTitle}</h1>
+                    <h2 className="text-[9vw] leading-none">{bannerSubtitle}</h2>
+
+                    <Link
+                        href={bannerButtonUrl}
+                        className="mt-6 px-6 py-3 bg-white text-emerald-900 rounded-4xl text-4xl mb-10"
+                    >
+                        {bannerButtonText}
+                    </Link>
+
+                    <div className="w-[100px] h-[100px] border border-emerald-700 rounded-full flex flex-col items-center justify-center">
+                        <span className="text-[4vh] text-emerald-700">&#8595;</span>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    );
 }
