@@ -1,6 +1,7 @@
 import { Asset } from "contentful";
 
 export interface Homepage {
+    pageTitle: string;
     bannerTitle: string;
     bannerSubtitle: string;
     bannerVideoUrl?: Asset;
