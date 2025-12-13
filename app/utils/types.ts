@@ -7,4 +7,6 @@ export interface Homepage {
     bannerVideoUrl?: Asset;
     bannerButtonText: string;
     bannerButtonUrl: string;
+    municipalIdea: string;
+    secondBlock: string
 }

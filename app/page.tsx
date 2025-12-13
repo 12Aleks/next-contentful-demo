@@ -1,8 +1,8 @@
-import { homepageAction } from "@/app/actions/homepageAction";
-import { Homepage } from "@/app/utils/types";
+import {homepageAction} from "@/app/actions/homepageAction";
+import {Homepage} from "@/app/utils/types";
 import "./globals.css";
 import BannerWithMask from "@/app/featchers/home/components/BannerWithMask";
-
+import Navbar from "@/app/components/Navbar";
 
 
 export async function generateMetadata() {
@@ -15,7 +15,7 @@ export async function generateMetadata() {
         };
     }
 
-    const { pageTitle, bannerSubtitle } = homepageEntry.fields as Homepage;
+    const {pageTitle, bannerSubtitle} = homepageEntry.fields as Homepage;
 
     return {
         title: pageTitle,
@@ -30,21 +30,34 @@ export default async function Home() {
         return <div>No homepage data found.</div>;
     }
 
-    const {bannerTitle, bannerSubtitle, bannerButtonText, bannerButtonUrl, bannerVideoUrl} = homepageEntry.fields as Homepage;
+    const {
+        bannerTitle,
+        bannerSubtitle,
+        bannerButtonText,
+        bannerButtonUrl,
+        bannerVideoUrl,
+        municipalIdea,
+        secondBlock
+    } = homepageEntry.fields as Homepage;
 
     const videoUrl = bannerVideoUrl?.fields?.file?.url as string | undefined;
 
     return (
-        <main className="flex min-h-screen w-full flex-col items-center ">
+        <>
+            <Navbar/>
+            <main className="flex min-h-screen w-full flex-col items-center">
 
-            <BannerWithMask videoUrl={videoUrl}
-                            bannerTitle={bannerTitle}
-                            bannerSubtitle={bannerSubtitle}
-                            bannerButtonText={bannerButtonText}
-                            bannerButtonUrl={bannerButtonUrl} />
+                <BannerWithMask videoUrl={videoUrl}
+                                bannerTitle={bannerTitle}
+                                bannerSubtitle={bannerSubtitle}
+                                bannerButtonText={bannerButtonText}
+                                bannerButtonUrl={bannerButtonUrl}
+                                municipalIdea={municipalIdea} secondBlock={secondBlock}
+                />
 
-            <section className="w-full h-[1500px] bg-amber-50"></section>
+                <section className="w-full h-[1500px] bg-amber-50"></section>
 
-        </main>
+            </main>
+        </>
     );
 }
