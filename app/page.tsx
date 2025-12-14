@@ -3,6 +3,7 @@ import {Homepage} from "@/app/utils/types";
 import "./globals.css";
 import BannerWithMask from "@/app/featchers/home/components/BannerWithMask";
 import Navbar from "@/app/components/Navbar";
+import CityTransformation from "@/app/featchers/home/components/CityTransformation";
 
 
 export async function generateMetadata() {
@@ -37,7 +38,8 @@ export default async function Home() {
         bannerButtonUrl,
         bannerVideoUrl,
         municipalIdea,
-        secondBlock
+        secondBlock,
+        cityTransformation
     } = homepageEntry.fields as Homepage;
 
     const videoUrl = bannerVideoUrl?.fields?.file?.url as string | undefined;
@@ -55,7 +57,7 @@ export default async function Home() {
                                 municipalIdea={municipalIdea} secondBlock={secondBlock}
                 />
 
-                <section className="w-full h-[1500px] bg-amber-50"></section>
+              <CityTransformation cityTransformation={cityTransformation}/>
 
             </main>
         </>

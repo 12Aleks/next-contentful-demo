@@ -1,7 +1,8 @@
 "use client";
 import {useEffect, useRef, useState} from "react";
-import Image from "next/image";
+import { useOnInView } from "react-intersection-observer";
 import Link from "next/link";
+import CustomButton from "@/app/components/CustomButton";
 
 interface IBannerWithMask {
     videoUrl: string | undefined;
@@ -25,10 +26,11 @@ export default function BannerWithMask({
     const [videoScale, setVideoScale] = useState(0.7);
     const [videoOffset, setVideoOffset] = useState(40);
 
+
     useEffect(() => {
         const handleScroll = () => {
             const scrollY = window.scrollY;
-            const maxScroll = window.innerHeight * 2; // 200vh когда маска полностью открывается
+            const maxScroll = window.innerHeight * 2; // 500vh когда маска полностью открывается
             const progress = Math.min(scrollY / maxScroll, 1);
 
 
@@ -38,6 +40,7 @@ export default function BannerWithMask({
 
             setVideoScale(scale);
             setVideoOffset(offset);
+
 
             if (maskRef.current) {
                 maskRef.current.setAttribute(
@@ -51,8 +54,26 @@ export default function BannerWithMask({
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    const trackingRef = useOnInView(
+        (inView: any, entry: any) => {
+            if (inView) {
+                // Element is in view - perhaps log an impression
+                console.log("Element appeared in view", entry.target);
+            } else {
+                console.log("Element left view", entry.target);
+            }
+        },
+        {
+            /* Optional options */
+            threshold: 0.5,
+            triggerOnce: true,
+        },
+    );
+
+
     return (
-        <section className="bg-emerald-900 w-full bg-[url('/arabic_design.png')] bg-no-repeat bg-top-right">
+        <section
+            className="bg-emerald-900 w-full bg-[url('/arabic_design.png')] bg-no-repeat bg-top-right">
 
             {/* Контейнер 300vh для скролла */}
             <div className="relative h-[500vh]">
@@ -88,15 +109,9 @@ export default function BannerWithMask({
                     <h2 className="text-[10vw] leading-none text-shadow-2xs text-shadow-emerald-900">
                         {bannerSubtitle}
                     </h2>
-
-                    <Link
-                        href={bannerButtonUrl}
-                        target="_blank"
-                        className="mt-[5vh] mb-[5vh] px-10 py-5 bg-white hover:bg-emerald-700 hover:text-white duration-300 text-emerald-900 rounded-4xl text-4xl inline-block"
-                    >
-                        {bannerButtonText}
-                    </Link>
-
+                    <CustomButton customClass="bg-white hover:bg-emerald-700 text-emerald-900 hover:text-white text-4xl"
+                                  text= {bannerButtonText}
+                                  link={bannerButtonUrl}/>
                     <div
                         className="w-[100px] h-[100px] border border-emerald-700 rounded-full flex flex-col items-center justify-center">
                         <span className="text-[4vh] text-emerald-700">&#8595;</span>
@@ -107,24 +122,16 @@ export default function BannerWithMask({
                 <div
                     className="text-white absolute z-10 w-full bottom-0 left-0 flex flex-col items-center justify-around  h-[400vh]">
                     <div className="flex flex-col items-center">
-                        <Link href={municipalIdea}
-                              target="_blank"
-                              className="mt-[5vh] mb-[5vh] px-10 py-5 bg-transparent hover:text-emerald-100 hover:border-emerald-100 duration-300  rounded-4xl text-4xl inline-block border border-white uppercase"
-
-                        >
-                            This is test button with link
-                        </Link>
-                        <h2 className="text-[2vw] text-center w-[35vw]">{municipalIdea}</h2>
+                        <CustomButton customClass="hover:text-emerald-100 hover:border-emerald-100 border-white uppercase text-4xl"
+                                      text="This is test button with link"
+                                      link={municipalIdea}/>
+                        <h2 className="text-[2vw] text-center max-w-1/2">{municipalIdea}</h2>
                     </div>
-                    <div className="flex flex-col items-center">
-                        <Link href={secondBlock}
-                              target="_blank"
-                              className="mt-[5vh] mb-[5vh] px-10 py-5 bg-transparent hover:text-emerald-100 hover:border-emerald-100 duration-300  rounded-4xl text-4xl inline-block border border-white uppercase"
-
-                        >
-                            This is test button with link
-                        </Link>
-                        <h2 className="text-[2vw] text-center w-[35vw]">{secondBlock}</h2>
+                    <div className="flex flex-col items-center"  ref={trackingRef}>
+                        <CustomButton customClass="hover:text-emerald-100 hover:border-emerald-100 border-white uppercase text-4xl"
+                                      text="This is test button with link"
+                                      link={secondBlock}/>
+                        <h2 className="text-[2vw] text-center max-w-1/2">{secondBlock}</h2>
                     </div>
                 </div>
 

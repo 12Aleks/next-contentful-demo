@@ -8,5 +8,6 @@ export interface Homepage {
     bannerButtonText: string;
     bannerButtonUrl: string;
     municipalIdea: string;
-    secondBlock: string
+    secondBlock: string;
+    cityTransformation: string
 }
