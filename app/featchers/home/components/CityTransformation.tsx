@@ -14,7 +14,7 @@ const CityTransformation = ({ cityTransformation,
 
     return (
         <section className="w-full min-h-screen bg-white flex flex-col items-center py-[20vw] px-10 ">
-            <CustomButton customClass="border-gray-600 hover:text-gray-800 hover:border-gray-800 uppercase text-xl text-black"
+            <CustomButton customClass="border-gray-600 hover:text-white hover:bg-black hover:border-gray-800 uppercase text-xl text-black"
                           text="This is test button with link"
                           link={'#'}/>
             <h2 className="text-[2vw] text-center max-w-1/2 text-black">{cityTransformation}</h2>
@@ -39,7 +39,7 @@ const CityTransformation = ({ cityTransformation,
                    <p>Test content</p>
                </div>
             </div>
-            <div className="grid grid-cols-3 gap-10 w-full auto-rows-[400px] md:auto-rows-[500px] xl:auto-rows-[750px] my-[5vw]">
+            <div className="grid grid-cols-3 gap-10 w-full auto-rows-[400px] md:auto-rows-[500px] xl:auto-rows-[700px] my-[5vw]">
             {
                 projects?.map((project, index) =>
                 <ProjectCard project={project} key={index} index={ index === 0 || index === 3}/>)

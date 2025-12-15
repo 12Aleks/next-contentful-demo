@@ -122,13 +122,13 @@ export default function BannerWithMask({
                 <div
                     className="text-white absolute z-10 w-full bottom-0 left-0 flex flex-col items-center justify-around  h-[400vh]">
                     <div className="flex flex-col items-center">
-                        <CustomButton customClass="hover:text-emerald-100 hover:border-emerald-100 border-white uppercase text-4xl"
+                        <CustomButton customClass="hover:text-white hover:bg-black hover:border-gray-800 border-white uppercase text-4xl"
                                       text="This is test button with link"
                                       link={municipalIdea}/>
                         <h2 className="text-[2vw] text-center max-w-1/2">{municipalIdea}</h2>
                     </div>
                     <div className="flex flex-col items-center"  ref={trackingRef}>
-                        <CustomButton customClass="hover:text-emerald-100 hover:border-emerald-100 border-white uppercase text-4xl"
+                        <CustomButton customClass="hover:text-white hover:bg-black hover:border-gray-800 border-white uppercase text-4xl"
                                       text="This is test button with link"
                                       link={secondBlock}/>
                         <h2 className="text-[2vw] text-center max-w-1/2">{secondBlock}</h2>
