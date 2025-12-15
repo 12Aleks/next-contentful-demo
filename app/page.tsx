@@ -39,10 +39,21 @@ export default async function Home() {
         bannerVideoUrl,
         municipalIdea,
         secondBlock,
-        cityTransformation
+        cityTransformation,
+        projects
     } = homepageEntry.fields as Homepage;
 
     const videoUrl = bannerVideoUrl?.fields?.file?.url as string | undefined;
+
+    const formattedProjects = projects?.map((p: any) => ({
+        projectCardTitle: p.fields.projectCardTitle,
+        projectCardImage: {
+            url: p.fields.projectCardImage.fields.file.url,
+            title: p.fields.projectCardImage.fields.title,
+        },
+        projectCardButtonText: p.fields.projectCardButtonText,
+        projectCardButtonUrl: p.fields.projectCardButtonUrl,
+    }));
 
     return (
         <>
@@ -57,7 +68,8 @@ export default async function Home() {
                                 municipalIdea={municipalIdea} secondBlock={secondBlock}
                 />
 
-              <CityTransformation cityTransformation={cityTransformation}/>
+              <CityTransformation cityTransformation={cityTransformation}
+              projects={formattedProjects}/>
 
             </main>
         </>

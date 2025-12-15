@@ -14,3 +14,4 @@ export const homepageAction = async (): Promise<Entry<Homepage> | null>  => {
 
     return null;
 }
+
