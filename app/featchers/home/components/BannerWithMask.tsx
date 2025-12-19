@@ -1,8 +1,10 @@
 "use client";
-import {useEffect, useRef, useState} from "react";
-import { useOnInView } from "react-intersection-observer";
-import Link from "next/link";
+import {useEffect, useRef} from "react";
 import CustomButton from "@/app/components/CustomButton";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface IBannerWithMask {
     videoUrl: string | undefined;
@@ -14,69 +16,45 @@ interface IBannerWithMask {
     secondBlock: string
 }
 
-export default function BannerWithMask({
-                                           videoUrl,
-                                           bannerTitle,
-                                           bannerSubtitle,
-                                           bannerButtonText,
-                                           bannerButtonUrl,
-                                           municipalIdea, secondBlock
-                                       }: IBannerWithMask) {
+export default function BannerWithMask({   videoUrl, bannerTitle, bannerSubtitle, bannerButtonText, bannerButtonUrl,
+                                           municipalIdea, secondBlock}: IBannerWithMask) {
     const maskRef = useRef<SVGGElement | null>(null);
-    const [videoScale, setVideoScale] = useState(0.7);
-    const [videoOffset, setVideoOffset] = useState(40);
-
 
     useEffect(() => {
-        const handleScroll = () => {
-            const scrollY = window.scrollY;
-            const maxScroll = window.innerHeight * 2; // 500vh когда маска полностью открывается
-            const progress = Math.min(scrollY / maxScroll, 1);
+        if (!maskRef.current) return;
 
+        const ctx = gsap.context(() => {
+            gsap.to({}, {
+                scrollTrigger: {
+                    trigger: ".banner-scroll-container",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true,
 
-            // Масштаб маски и смещение
-            const scale = 0.7 + progress * 2.5; // от 1.4 до ~3.9
-            const offset = 40 - progress * 40; // смещаем вверх до 0
+                    onUpdate: (self) => {
+                        const progress = self.progress;
 
-            setVideoScale(scale);
-            setVideoOffset(offset);
+                        const scale = 0.7 + progress * 2.5;
+                        const offset = 40 - progress * 40;
 
+                        maskRef.current?.setAttribute(
+                            "transform",
+                            `translate(50 ${offset}) scale(${scale} ${scale}) translate(-50 0)`
+                        );
+                    }
+                }
+            });
+        });
 
-            if (maskRef.current) {
-                maskRef.current.setAttribute(
-                    "transform",
-                    `translate(50 ${offset}) scale(${scale} ${scale}) translate(-50 0)`
-                );
-            }
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
-    const trackingRef = useOnInView(
-        (inView: any, entry: any) => {
-            if (inView) {
-                // Element is in view - perhaps log an impression
-                console.log("Element appeared in view", entry.target);
-            } else {
-                console.log("Element left view", entry.target);
-            }
-        },
-        {
-            /* Optional options */
-            threshold: 0.5,
-            triggerOnce: true,
-        },
-    );
-
+        return () => ctx.revert();
+    }, [])
 
     return (
         <section
             className="bg-emerald-900 w-full bg-[url('/arabic_design.png')] bg-no-repeat bg-top-right">
 
-            {/* Контейнер 300vh для скролла */}
-            <div className="relative h-[500vh]">
+            {/* Контейнер 500vh для скролла */}
+            <div className="relative h-[500vh] banner-scroll-container">
                 <div className="absolute z-10 w-full h-full bg-black opacity-35"></div>
                 {/* Sticky контейнер + маска */}
                 <div className="sticky top-0 w-full h-screen overflow-hidden">
@@ -87,7 +65,7 @@ export default function BannerWithMask({
                             <mask id="archMask">
                                 <rect width="100" height="100" fill="black"/>
                                 <g ref={maskRef}
-                                   transform={`translate(50 ${videoOffset}) scale(${videoScale} ${videoScale}) translate(-50 0)`}
+                                   transform="translate(50 40) scale(0.7 0.7) translate(-50 0)"
                                 >
                                     <path d="M25 100 L25 20 A25 25 0 0 1 75 20 L75 100 Z" fill="white"/>
                                 </g>
@@ -127,14 +105,13 @@ export default function BannerWithMask({
                                       link={municipalIdea}/>
                         <h2 className="text-[2vw] text-center max-w-1/2">{municipalIdea}</h2>
                     </div>
-                    <div className="flex flex-col items-center"  ref={trackingRef}>
+                    <div className="flex flex-col items-center"  >
                         <CustomButton customClass="hover:text-white hover:bg-black hover:border-gray-800 border-white uppercase text-4xl"
                                       text="This is test button with link"
                                       link={secondBlock}/>
                         <h2 className="text-[2vw] text-center max-w-1/2">{secondBlock}</h2>
                     </div>
                 </div>
-
 
             </div>
         </section>

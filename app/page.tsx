@@ -4,9 +4,10 @@ import "./globals.css";
 import BannerWithMask from "@/app/featchers/home/components/BannerWithMask";
 import Navbar from "@/app/components/Navbar";
 import CityTransformation from "@/app/featchers/home/components/CityTransformation";
+import {Metadata} from "next";
 
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
     const homepageEntry = await homepageAction();
 
     if (!homepageEntry) {
@@ -40,7 +41,8 @@ export default async function Home() {
         municipalIdea,
         secondBlock,
         cityTransformation,
-        projects
+        projects,
+        projectsIntro
     } = homepageEntry.fields as Homepage;
 
     const videoUrl = bannerVideoUrl?.fields?.file?.url as string | undefined;
@@ -69,6 +71,7 @@ export default async function Home() {
                 />
 
               <CityTransformation cityTransformation={cityTransformation}
+                                  projectsIntro={projectsIntro}
               projects={formattedProjects}/>
 
             </main>

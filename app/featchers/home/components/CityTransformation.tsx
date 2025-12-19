@@ -3,11 +3,12 @@ import {Project} from "@/app/utils/types";
 import ProjectCard from "@/app/featchers/home/components/ProjectCard";
 
 interface ICityTransformation {
-    cityTransformation: string
+    cityTransformation: string;
+    projectsIntro?: string;
     projects?: Project[]
 }
 
-const CityTransformation = ({ cityTransformation,
+const CityTransformation = ({ cityTransformation,projectsIntro,
                             projects}: ICityTransformation) => {
 
 
@@ -26,7 +27,7 @@ const CityTransformation = ({ cityTransformation,
               [&_p]:max-w-1/3
 
             ">
-               <div className="px-[2vw] ">
+               <div className="px-[2vw]">
                    <h3 className="text-[5vw] text-center max-w-1/2 text-black ">+ 300</h3>
                    <p>Test content</p>
                </div>
@@ -39,6 +40,7 @@ const CityTransformation = ({ cityTransformation,
                    <p>Test content</p>
                </div>
             </div>
+            <h2 className="mt-[15vw] text-[2vw] text-center max-w-1/2 text-black">{projectsIntro}</h2>
             <div className="grid grid-cols-3 gap-10 w-full auto-rows-[400px] md:auto-rows-[500px] xl:auto-rows-[700px] my-[5vw]">
             {
                 projects?.map((project, index) =>

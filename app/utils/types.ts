@@ -1,4 +1,4 @@
-import { Asset } from "contentful";
+import {Asset, Entry, EntrySkeletonType} from "contentful";
 
 export interface Project {
     projectCardTitle: string;
@@ -8,6 +8,22 @@ export interface Project {
     };
     projectCardButtonText?: string;
     projectCardButtonUrl?: string;
+}
+
+export interface HomepageSkeleton extends EntrySkeletonType {
+    contentTypeId: "homepage";
+    fields: {
+        pageTitle: string;
+        bannerTitle: string;
+        bannerSubtitle: string;
+        bannerVideoUrl?: Asset;
+        bannerButtonText: string;
+        bannerButtonUrl: string;
+        municipalIdea: string;
+        secondBlock: string;
+        cityTransformation: string;
+        projects?: Project[];
+    };
 }
 
 export interface Homepage {
@@ -20,5 +36,6 @@ export interface Homepage {
     municipalIdea: string;
     secondBlock: string;
     cityTransformation: string;
+    projectsIntro?:string
     projects?: Project[];
 }

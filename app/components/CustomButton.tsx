@@ -9,7 +9,7 @@ interface ICustomButton {
 const CustomButton = ({customClass, text, link}: ICustomButton) => {
     return (
         <Link href={link} target="_blank"
-              className={`mt-[5vh] mb-[5vh] px-10 py-5 duration-300 rounded-4xl  inline-block border ${customClass}`}
+              className={`mt-[5vh] mb-[5vh] px-10 py-5 duration-300 rounded-4xl inline-block border ${customClass}`}
         >
              {text}
         </Link>
