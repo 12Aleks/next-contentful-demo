@@ -5,6 +5,7 @@ import BannerWithMask from "@/app/featchers/home/components/BannerWithMask";
 import Navbar from "@/app/components/Navbar";
 import CityTransformation from "@/app/featchers/home/components/CityTransformation";
 import {Metadata} from "next";
+import Footer from "@/app/components/Footer";
 
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -75,6 +76,7 @@ export default async function Home() {
               projects={formattedProjects}/>
 
             </main>
+            <Footer />
         </>
     );
 }

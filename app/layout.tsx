@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import localFont from "next/font/local";
+import {NextFont} from "next/dist/compiled/@next/font";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -10,6 +12,37 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const lato = localFont({
+    src: [
+        {
+            path: './fonts/Lato/Lato-Thin.woff2',
+            weight: '100',
+            style: 'normal',
+        },
+        {
+            path: './fonts/Lato/Lato-Light.woff2',
+            weight: '300',
+            style: 'normal',
+        },
+        {
+            path: './fonts/Lato/Lato-Regular.woff2',
+            weight: '400',
+            style: 'normal',
+        },
+        {
+            path: './fonts/Lato/Lato-Bold.woff2',
+            weight: '700',
+            style: 'normal',
+        },
+        {
+            path: './fonts/Lato/Lato-Black.woff2',
+            weight: '900',
+            style: 'normal',
+        },
+    ],
+    display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -25,11 +58,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${lato.className} ${geistMono.variable} antialiased`}
       >
 
         {children}
       </body>
+
     </html>
   );
 }

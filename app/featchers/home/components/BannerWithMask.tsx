@@ -53,8 +53,8 @@ export default function BannerWithMask({   videoUrl, bannerTitle, bannerSubtitle
         <section
             className="bg-emerald-900 w-full bg-[url('/arabic_design.png')] bg-no-repeat bg-top-right">
 
-            {/* Контейнер 500vh для скролла */}
-            <div className="relative h-[500vh] banner-scroll-container">
+            {/* Контейнер 650vh для скролла */}
+            <div className="relative h-[650vh] banner-scroll-container">
                 <div className="absolute z-10 w-full h-full bg-black opacity-35"></div>
                 {/* Sticky контейнер + маска */}
                 <div className="sticky top-0 w-full h-screen overflow-hidden">
@@ -84,7 +84,7 @@ export default function BannerWithMask({   videoUrl, bannerTitle, bannerSubtitle
                 <div
                     className="absolute z-10 flex flex-col items-start w-full max-h-screen top-[18vh] text-white p-16 uppercase gap-y-10">
                     <h1 className="text-[3vw]">{bannerTitle}</h1>
-                    <h2 className="text-[10vw] leading-none text-shadow-2xs text-shadow-emerald-900">
+                    <h2 className="text-[10vw] leading-none text-shadow-2xs text-shadow-emerald-900 font-black">
                         {bannerSubtitle}
                     </h2>
                     <CustomButton customClass="bg-white hover:bg-emerald-700 text-emerald-900 hover:text-white text-4xl"
